@@ -67,34 +67,38 @@
 
         /* --- ANIMATION KEYFRAMES --- */
         .reveal { 
-            /* Progressive Enhancement: Visible by default, hidden only if JS is active */
-            opacity: 1;
-            transition: clip-path 1.2s var(--ease-mech), transform 1.2s var(--ease-mech), opacity 1.2s;
+            opacity: 1; /* Visible by default */
+            filter: blur(0px);
+            transform: translateY(0);
+            transition: opacity 1.2s var(--ease-mech), transform 1.2s var(--ease-mech), filter 1.2s var(--ease-mech);
         }
         
-        /* Only hide elements if JavaScript is running to reveal them */
-        .js-hook .reveal {
-            clip-path: inset(0 0 100% 0); 
-            transform: translateY(30px);
+        /* High-reliability hide state */
+        .js-active .reveal {
             opacity: 0;
+            filter: blur(10px);
+            transform: translateY(30px);
         }
 
         .reveal.active { 
-            clip-path: inset(0 0 0 0); 
-            transform: translateY(0);
             opacity: 1;
+            filter: blur(0px);
+            transform: translateY(0);
         }
 
-        /* --- HERO --- */
-        section { padding: 12vh 8vw; min-height: 100vh; position: relative; }
+        /* --- SECTIONS --- */
+        section { padding: 12vh 8vw; min-height: 100vh; position: relative; display: flex; flex-direction: column; justify-content: center; }
 
+        /* --- HERO --- */
         .hero { display: flex; flex-direction: column; justify-content: center; }
         .hero-title {
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(4rem, 18vw, 25rem);
-            line-height: 0.8;
+            font-size: clamp(3rem, 16vw, 15rem); /* Slightly smaller to prevent cut-off */
+            line-height: 0.9;
             letter-spacing: -0.06em;
             font-weight: 700;
+            width: 100%;
+            padding: 20px 0; /* Add space to prevent clipping */
         }
         .hero-title span { display: block; }
         .hero-sub {
@@ -106,7 +110,17 @@
             text-transform: uppercase;
         }
 
-        /* --- GALLERY: REFINED MOSAIC --- */
+        /* --- INFO SECTION --- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5vw;
+            margin-top: 5vh;
+        }
+        .info-item h3 { font-family: 'Syncopate'; font-size: 1.2rem; color: var(--accent); margin-bottom: 20px; }
+        .info-item p { color: #888; line-height: 1.8; font-size: 0.95rem; }
+
+        /* --- GALLERY --- */
         .mosaic {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -141,8 +155,8 @@
         .m-3 { grid-column: span 4; height: 50vh; margin-top: -15vh; }
         .m-4 { grid-column: span 8; height: 50vh; }
 
-        /* --- SOUND: THE GRID --- */
-        .sound-container { margin-top: 10vh; }
+        /* --- SOUND --- */
+        .sound-container { margin-top: 10vh; width: 100%; }
         .sound-row {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
@@ -156,7 +170,7 @@
         .sound-row h3 { font-family: 'Syncopate'; font-size: 3vw; }
         .sound-row span { font-size: 0.8rem; align-self: center; text-transform: uppercase; color: #666; }
 
-        /* --- BOOKING: THE ENGAGEMENT --- */
+        /* --- BOOKING --- */
         .booking-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10vw; margin-top: 5vh; }
         .booking-text h2 { font-family: 'Syncopate'; font-size: 5vw; line-height: 1; margin-bottom: 20px; }
         .booking-text p { color: #666; line-height: 1.6; }
@@ -185,17 +199,24 @@
 
         footer { padding: 40px 8vw; border-top: 1px solid #111; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
 
+        @media (max-width: 768px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .booking-layout { grid-template-columns: 1fr; }
+            .form-panel { grid-template-columns: 1fr; }
+            .full { grid-column: span 1; }
+            .submit-trigger { grid-column: span 1; }
+        }
+
     </style>
 </head>
-<body>
-    <!-- Mark that JS is running to enable hidden states -->
-    <script>document.body.classList.add('js-hook');</script>
+<body class="js-active">
 
     <div id="cursor-container">
         <div class="cursor-dot" id="dot"></div>
         <div class="cursor-bracket" id="bracket"></div>
     </div>
 
+    <!-- HERO SECTION -->
     <section class="hero">
         <div class="reveal">
             <h1 class="hero-title">
@@ -207,6 +228,22 @@
         </div>
     </section>
 
+    <!-- INFO LOG SECTION -->
+    <section>
+        <h2 class="reveal" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// SYSTEM_INFO</h2>
+        <div class="info-grid">
+            <div class="info-item reveal">
+                <h3>THE_ENTITY</h3>
+                <p>SINGLEMOTHEROFTWO is a sonic protocol designed for high-intensity acoustic environments. Operating at the intersection of domestic noise and industrial techno, the entity constructs brutalist soundscapes focused on rhythm as a structural necessity.</p>
+            </div>
+            <div class="info-item reveal">
+                <h3>THE_METHOD</h3>
+                <p>Hardware-first synthesis, analog distortion loops, and non-linear sequencing. Every transmission is a unique recovery of fragmented data, processed through a vacuum of sub-bass and metallic percussion.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
     <section>
         <h2 class="reveal" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// VISUAL_DATA_RECOVERY</h2>
         <div class="mosaic">
@@ -217,27 +254,31 @@
         </div>
     </section>
 
+    <!-- SOUND SECTION -->
     <section>
         <h2 class="reveal" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// SONIC_ARCHIVE</h2>
-        <div class="sound-container reveal">
-            <a href="#" class="sound-row">
-                <h3>ISOLATION WARD</h3>
-                <span>EP / 2024</span>
-                <span style="text-align: right;">[PLAY_SIGNAL]</span>
-            </a>
-            <a href="#" class="sound-row">
-                <h3>DOMESTIC DECAY</h3>
-                <span>LP / 2023</span>
-                <span style="text-align: right;">[PLAY_SIGNAL]</span>
-            </a>
-            <a href="#" class="sound-row">
-                <h3>VOLTAGE_LEAK</h3>
-                <span>SINGLE / 2023</span>
-                <span style="text-align: right;">[PLAY_SIGNAL]</span>
-            </a>
+        <div class="sound-container">
+            <div class="reveal">
+                <a href="#" class="sound-row">
+                    <h3>ISOLATION WARD</h3>
+                    <span>EP / 2024</span>
+                    <span style="text-align: right;">[PLAY_SIGNAL]</span>
+                </a>
+                <a href="#" class="sound-row">
+                    <h3>DOMESTIC DECAY</h3>
+                    <span>LP / 2023</span>
+                    <span style="text-align: right;">[PLAY_SIGNAL]</span>
+                </a>
+                <a href="#" class="sound-row">
+                    <h3>VOLTAGE_LEAK</h3>
+                    <span>SINGLE / 2023</span>
+                    <span style="text-align: right;">[PLAY_SIGNAL]</span>
+                </a>
+            </div>
         </div>
     </section>
 
+    <!-- BOOKING SECTION -->
     <section>
         <div class="booking-layout">
             <div class="booking-text reveal">
@@ -309,16 +350,25 @@
                     entry.target.classList.add('active');
                 }
             });
-        }, { threshold: 0.05 });
+        }, { 
+            threshold: 0.05,
+            rootMargin: '0px 0px -50px 0px'
+        });
 
+        // Initialize observers
         document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
             // Instant check for elements already in view
             const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight) {
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
                 el.classList.add('active');
             }
         });
+
+        // Fail-safe: If any reveal hasn't triggered after 2 seconds, reveal everything
+        setTimeout(() => {
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+        }, 2000);
 
         // --- HOVER STATES ---
         const interactives = document.querySelectorAll('a, button, input, textarea, .m-item');
