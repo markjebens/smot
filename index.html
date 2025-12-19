@@ -17,6 +17,19 @@
             --ease-mech: cubic-bezier(0.8, 0, 0.2, 1);
         }
 
+        @keyframes grain {
+            0%, 100% { transform:translate(0, 0) }
+            10% { transform:translate(-5%, -10%) }
+            20% { transform:translate(-15%, 5%) }
+            30% { transform:translate(7%, -15%) }
+            40% { transform:translate(-5%, 20%) }
+            50% { transform:translate(-15%, 10%) }
+            60% { transform:translate(15%, 0) }
+            70% { transform:translate(0, 15%) }
+            80% { transform:translate(3%, 15%) }
+            90% { transform:translate(-10%, 10%) }
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
 
         body {
@@ -25,6 +38,35 @@
             color: var(--text);
             overflow-x: hidden;
             line-height: 1.1;
+        }
+
+        /* --- VISUAL TEXTURE LAYERS --- */
+        .noise {
+            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.08; pointer-events: none; z-index: 9999;
+            animation: grain 8s steps(10) infinite;
+        }
+
+        .grid-bg {
+            position: fixed; inset: 0;
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 10vw 10vw;
+            pointer-events: none; z-index: 0;
+        }
+
+        .scanline {
+            position: fixed; top: 0; left: 0; width: 100%; height: 5px;
+            background: rgba(255, 0, 51, 0.05);
+            z-index: 10000; pointer-events: none;
+            animation: scan 10s linear infinite;
+        }
+
+        @keyframes scan {
+            from { transform: translateY(-100vh); }
+            to { transform: translateY(100vh); }
         }
 
         /* --- HUD PRECISION CURSOR --- */
@@ -53,7 +95,6 @@
             transition: all 0.3s var(--ease-mech);
         }
 
-        /* Bracket Corners Effect */
         .cursor-bracket::before, .cursor-bracket::after {
             content: ''; position: absolute; width: 8px; height: 8px; border: 1px solid var(--accent);
         }
@@ -65,50 +106,68 @@
             border-color: var(--accent);
         }
 
-        /* --- ANIMATION KEYFRAMES --- */
+        /* --- ANIMATION SYSTEM --- */
         .reveal { 
-            opacity: 1; /* Visible by default */
-            filter: blur(0px);
-            transform: translateY(0);
-            transition: opacity 1.2s var(--ease-mech), transform 1.2s var(--ease-mech), filter 1.2s var(--ease-mech);
+            opacity: 1; filter: blur(0px); transform: translateY(0);
+            transition: opacity 1.5s var(--ease-mech), transform 1.5s var(--ease-mech), filter 1.5s var(--ease-mech);
         }
         
-        /* High-reliability hide state */
-        .js-active .reveal {
-            opacity: 0;
-            filter: blur(10px);
-            transform: translateY(30px);
-        }
+        .js-active .reveal { opacity: 0; filter: blur(20px); transform: translateY(50px); }
 
-        .reveal.active { 
-            opacity: 1;
-            filter: blur(0px);
-            transform: translateY(0);
+        .reveal.active { opacity: 1; filter: blur(0px); transform: translateY(0); }
+
+        /* Staggered Children */
+        .reveal-parent.active .reveal-child {
+            opacity: 1; transform: translateY(0); filter: blur(0px);
+        }
+        .js-active .reveal-child {
+            opacity: 0; transform: translateY(20px); filter: blur(10px);
+            transition: opacity 1s var(--ease-mech), transform 1s var(--ease-mech), filter 1s var(--ease-mech);
         }
 
         /* --- SECTIONS --- */
-        section { padding: 12vh 8vw; min-height: 100vh; position: relative; display: flex; flex-direction: column; justify-content: center; }
+        section { padding: 15vh 8vw; min-height: 100vh; position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
 
         /* --- HERO --- */
-        .hero { display: flex; flex-direction: column; justify-content: center; }
         .hero-title {
             font-family: 'Syncopate', sans-serif;
-            font-size: clamp(3rem, 16vw, 15rem); /* Slightly smaller to prevent cut-off */
+            font-size: clamp(3rem, 16vw, 15rem);
             line-height: 0.9;
             letter-spacing: -0.06em;
             font-weight: 700;
-            width: 100%;
-            padding: 20px 0; /* Add space to prevent clipping */
+            padding: 20px 0;
+            mix-blend-mode: difference;
         }
         .hero-title span { display: block; }
         .hero-sub {
             margin-top: 30px;
             color: var(--accent);
             font-weight: 900;
-            letter-spacing: 0.5em;
-            font-size: 0.8rem;
+            letter-spacing: 0.8em;
+            font-size: 0.7rem;
             text-transform: uppercase;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--accent);
+            width: fit-content;
+            animation: typing 4s steps(40) infinite alternate;
         }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+
+        /* --- MARQUEE --- */
+        .marquee-wrap {
+            position: absolute; top: 5vh; left: 0; width: 100%;
+            overflow: hidden; background: rgba(255,0,51,0.05);
+            padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .marquee {
+            display: flex; white-space: nowrap; font-size: 10px; font-weight: 900;
+            color: rgba(255,255,255,0.2); letter-spacing: 5px;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* --- INFO SECTION --- */
         .info-grid {
@@ -117,8 +176,12 @@
             gap: 5vw;
             margin-top: 5vh;
         }
-        .info-item h3 { font-family: 'Syncopate'; font-size: 1.2rem; color: var(--accent); margin-bottom: 20px; }
-        .info-item p { color: #888; line-height: 1.8; font-size: 0.95rem; }
+        .info-item { position: relative; padding: 40px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); }
+        .info-item::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--accent); transition: 0.6s var(--ease-mech); }
+        .info-item:hover::before { height: 100%; }
+        
+        .info-item h3 { font-family: 'Syncopate'; font-size: 1rem; color: var(--accent); margin-bottom: 20px; }
+        .info-item p { color: #888; line-height: 1.8; font-size: 0.9rem; }
 
         /* --- GALLERY --- */
         .mosaic {
@@ -132,21 +195,22 @@
             background: #111;
             overflow: hidden;
             height: 50vh;
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .m-item img {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: grayscale(1) brightness(0.7);
-            transition: transform 1s var(--ease-mech), filter 0.5s;
+            width: 100%; height: 120%; object-fit: cover; /* taller for parallax */
+            filter: grayscale(1) brightness(0.5);
+            transition: filter 0.5s;
         }
-        .m-item:hover img {
-            filter: grayscale(0) brightness(1);
-            transform: scale(1.1);
-        }
+        .m-item:hover img { filter: grayscale(0) brightness(1); }
         .m-item::after {
-            content: 'VIEW_ARCHIVE';
-            position: absolute; bottom: 20px; left: 20px;
+            content: '[VIEW_DATA]';
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 10px; color: var(--accent);
             opacity: 0; transition: 0.3s;
+            background: var(--bg); padding: 10px 20px;
+            border: 1px solid var(--accent);
         }
         .m-item:hover::after { opacity: 1; }
 
@@ -156,19 +220,27 @@
         .m-4 { grid-column: span 8; height: 50vh; }
 
         /* --- SOUND --- */
-        .sound-container { margin-top: 10vh; width: 100%; }
+        .sound-container { margin-top: 10vh; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); }
         .sound-row {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
-            padding: 40px 0;
-            border-bottom: 1px solid #222;
+            padding: 50px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             text-decoration: none;
             color: inherit;
-            transition: background 0.4s var(--ease-mech);
+            position: relative;
+            overflow: hidden;
         }
-        .sound-row:hover { background: #0a0a0a; color: var(--accent); padding-left: 20px; }
-        .sound-row h3 { font-family: 'Syncopate'; font-size: 3vw; }
-        .sound-row span { font-size: 0.8rem; align-self: center; text-transform: uppercase; color: #666; }
+        .sound-row::before {
+            content: ''; position: absolute; inset: 0;
+            background: var(--accent); transform: scaleY(0);
+            transform-origin: bottom; transition: transform 0.4s var(--ease-mech);
+            z-index: -1;
+        }
+        .sound-row:hover::before { transform: scaleY(1); }
+        .sound-row:hover { padding-left: 30px; color: #fff; }
+        .sound-row h3 { font-family: 'Syncopate'; font-size: 4vw; mix-blend-mode: exclusion; }
+        .sound-row span { font-size: 0.8rem; align-self: center; text-transform: uppercase; color: #666; mix-blend-mode: difference; }
 
         /* --- BOOKING --- */
         .booking-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10vw; margin-top: 5vh; }
@@ -176,8 +248,8 @@
         .booking-text p { color: #666; line-height: 1.6; }
 
         .form-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .input-box { border-bottom: 1px solid #333; position: relative; padding: 10px 0; }
-        .input-box label { font-size: 10px; color: var(--accent); font-weight: 900; display: block; margin-bottom: 10px; }
+        .input-box { border-bottom: 1px solid #333; position: relative; padding: 20px 0; }
+        .input-box label { font-size: 10px; color: var(--accent); font-weight: 900; display: block; margin-bottom: 10px; letter-spacing: 2px; }
         .input-box input, .input-box textarea {
             width: 100%; background: transparent; border: none; outline: none;
             color: #fff; font-family: 'Inter'; font-size: 1.1rem;
@@ -189,15 +261,16 @@
             background: transparent;
             border: 1px solid var(--accent);
             color: var(--accent);
-            padding: 25px;
+            padding: 30px;
             font-family: 'Syncopate';
             font-size: 0.9rem;
             transition: 0.3s;
             margin-top: 20px;
+            position: relative; overflow: hidden;
         }
         .submit-trigger:hover { background: var(--accent); color: white; }
 
-        footer { padding: 40px 8vw; border-top: 1px solid #111; display: flex; justify-content: space-between; font-size: 10px; color: #444; }
+        footer { padding: 60px 8vw; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; font-size: 10px; color: #444; background: rgba(0,0,0,0.5); }
 
         @media (max-width: 768px) {
             .info-grid { grid-template-columns: 1fr; }
@@ -205,11 +278,16 @@
             .form-panel { grid-template-columns: 1fr; }
             .full { grid-column: span 1; }
             .submit-trigger { grid-column: span 1; }
+            .sound-row { grid-template-columns: 1fr; gap: 10px; }
         }
 
     </style>
 </head>
 <body class="js-active">
+    
+    <div class="noise"></div>
+    <div class="grid-bg"></div>
+    <div class="scanline"></div>
 
     <div id="cursor-container">
         <div class="cursor-dot" id="dot"></div>
@@ -218,25 +296,30 @@
 
     <!-- HERO SECTION -->
     <section class="hero">
+        <div class="marquee-wrap">
+            <div class="marquee">
+                SINGLEMOTHEROFTWO // INDUSTRIAL // 145BPM // DOMESTIC_BRUTALISM // ANALOG_RECOVERY // SINGLEMOTHEROFTWO // INDUSTRIAL // 145BPM // DOMESTIC_BRUTALISM // ANALOG_RECOVERY
+            </div>
+        </div>
         <div class="reveal">
             <h1 class="hero-title">
                 <span>SINGLE</span>
                 <span style="color:var(--accent)">MOTHER</span>
                 <span>OF_TWO</span>
             </h1>
-            <p class="hero-sub">145 BPM // DOMESTIC BRUTALISM</p>
+            <p class="hero-sub">STRUCTURAL_RHYTHM_PROTOCOL</p>
         </div>
     </section>
 
-    <!-- INFO SECTION -->
-    <section>
-        <h2 class="reveal" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// BIOGRAPHY</h2>
+    <!-- BIOGRAPHY SECTION -->
+    <section class="reveal-parent">
+        <h2 class="reveal-child" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// BIOGRAPHY</h2>
         <div class="info-grid">
-            <div class="info-item reveal">
+            <div class="info-item reveal-child" style="transition-delay: 0.1s;">
                 <h3>THE_PROJECT</h3>
                 <p>SINGLEMOTHEROFTWO is a contemporary industrial project exploring the intersection of domestic noise and functional rhythm. The entity focuses on structural sound design, constructing stripped-back, high-intensity soundscapes for focused acoustic environments.</p>
             </div>
-            <div class="info-item reveal">
+            <div class="info-item reveal-child" style="transition-delay: 0.2s;">
                 <h3>THE_APPROACH</h3>
                 <p>Focusing on analog synthesis and percussion-driven sequencing, the sound is defined by its metallic textures and low-frequency depth. Every performance is an exploration of rhythmic discipline and textural evolution.</p>
             </div>
@@ -244,49 +327,47 @@
     </section>
 
     <!-- GALLERY SECTION -->
-    <section>
-        <h2 class="reveal" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// VISUAL_ARCHIVE</h2>
+    <section class="reveal-parent">
+        <h2 class="reveal-child" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// VISUAL_ARCHIVE</h2>
         <div class="mosaic">
-            <div class="m-item m-1 reveal"><img src="public/1.jpg" alt="Visual 1"></div>
-            <div class="m-item m-2 reveal"><img src="public/2.jpg" alt="Visual 2"></div>
-            <div class="m-item m-3 reveal"><img src="public/3.jpg" alt="Visual 3"></div>
-            <div class="m-item m-4 reveal"><img src="public/4.jpg" alt="Visual 4"></div>
+            <div class="m-item m-1 reveal-child" style="transition-delay: 0.1s;"><img src="public/1.jpg" alt="Visual 1" class="parallax"></div>
+            <div class="m-item m-2 reveal-child" style="transition-delay: 0.2s;"><img src="public/2.jpg" alt="Visual 2" class="parallax"></div>
+            <div class="m-item m-3 reveal-child" style="transition-delay: 0.3s;"><img src="public/3.jpg" alt="Visual 3" class="parallax"></div>
+            <div class="m-item m-4 reveal-child" style="transition-delay: 0.4s;"><img src="public/4.jpg" alt="Visual 4" class="parallax"></div>
         </div>
     </section>
 
     <!-- SOUND SECTION -->
-    <section>
-        <h2 class="reveal" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// RELEASES</h2>
+    <section class="reveal-parent">
+        <h2 class="reveal-child" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// RELEASES</h2>
         <div class="sound-container">
-            <div class="reveal">
-                <a href="#" class="sound-row">
-                    <h3>ISOLATION WARD</h3>
-                    <span>EP / 2024</span>
-                    <span style="text-align: right;">[LISTENING_ROOM]</span>
-                </a>
-                <a href="#" class="sound-row">
-                    <h3>DOMESTIC DECAY</h3>
-                    <span>LP / 2023</span>
-                    <span style="text-align: right;">[LISTENING_ROOM]</span>
-                </a>
-                <a href="#" class="sound-row">
-                    <h3>VOLTAGE_LEAK</h3>
-                    <span>SINGLE / 2023</span>
-                    <span style="text-align: right;">[LISTENING_ROOM]</span>
-                </a>
-            </div>
+            <a href="#" class="sound-row reveal-child" style="transition-delay: 0.1s;">
+                <h3>ISOLATION WARD</h3>
+                <span>EP / 2024</span>
+                <span style="text-align: right;">[LISTENING_ROOM]</span>
+            </a>
+            <a href="#" class="sound-row reveal-child" style="transition-delay: 0.2s;">
+                <h3>DOMESTIC DECAY</h3>
+                <span>LP / 2023</span>
+                <span style="text-align: right;">[LISTENING_ROOM]</span>
+            </a>
+            <a href="#" class="sound-row reveal-child" style="transition-delay: 0.3s;">
+                <h3>VOLTAGE_LEAK</h3>
+                <span>SINGLE / 2023</span>
+                <span style="text-align: right;">[LISTENING_ROOM]</span>
+            </a>
         </div>
     </section>
 
     <!-- BOOKING SECTION -->
-    <section>
+    <section class="reveal-parent">
         <div class="booking-layout">
-            <div class="booking-text reveal">
+            <div class="booking-text reveal-child">
                 <h2>BOOKINGS &<br>INQUIRIES</h2>
                 <p>Currently accepting performance and collaboration inquiries for 2025/2026. Please provide event details and contact information below.</p>
             </div>
             
-            <form class="form-panel reveal">
+            <form class="form-panel reveal-child" style="transition-delay: 0.2s;">
                 <div class="input-box">
                     <label>PROMOTER / AGENCY</label>
                     <input type="text" placeholder="Your Organization">
@@ -352,23 +433,37 @@
             });
         }, { 
             threshold: 0.05,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -100px 0px'
         });
 
-        // Initialize observers
-        document.querySelectorAll('.reveal').forEach(el => {
+        document.querySelectorAll('.reveal, .reveal-parent').forEach(el => {
             observer.observe(el);
-            // Instant check for elements already in view
             const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
+            if (rect.top < window.innerHeight) {
                 el.classList.add('active');
             }
         });
 
-        // Fail-safe: If any reveal hasn't triggered after 2 seconds, reveal everything
+        // --- PARALLAX & EXTRA ANIMATION ---
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            
+            // Parallax Images
+            document.querySelectorAll('.parallax').forEach(img => {
+                const parent = img.parentElement;
+                const rect = parent.getBoundingClientRect();
+                const offset = (window.innerHeight - rect.top) * 0.1;
+                img.style.transform = `translateY(${offset - 20}px)`;
+            });
+
+            // Grid Movement
+            document.querySelector('.grid-bg').style.transform = `translateY(${scrolled * 0.2}px)`;
+        });
+
+        // Fail-safe
         setTimeout(() => {
-            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-        }, 2000);
+            document.querySelectorAll('.reveal, .reveal-parent').forEach(el => el.classList.add('active'));
+        }, 3000);
 
         // --- HOVER STATES ---
         const interactives = document.querySelectorAll('a, button, input, textarea, .m-item');
