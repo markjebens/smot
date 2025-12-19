@@ -203,16 +203,6 @@
             transition: filter 0.5s;
         }
         .m-item:hover img { filter: grayscale(0) brightness(1); }
-        .m-item::after {
-            content: '[VIEW_DATA]';
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 10px; color: var(--accent);
-            opacity: 0; transition: 0.3s;
-            background: var(--bg); padding: 10px 20px;
-            border: 1px solid var(--accent);
-        }
-        .m-item:hover::after { opacity: 1; }
 
         .m-1 { grid-column: span 7; height: 70vh; }
         .m-2 { grid-column: span 5; height: 40vh; margin-top: 10vh; }
