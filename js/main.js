@@ -29,11 +29,23 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('active');
+            // Once revealed, stop observing to save resources
+            observer.unobserve(entry.target);
         }
     });
-}, { threshold: 0.1 });
+}, { 
+    threshold: 0.05, // Lower threshold for better detection
+    rootMargin: '0px 0px -50px 0px' // Trigger slightly before it enters the viewport
+});
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal').forEach(el => {
+    observer.observe(el);
+    // Initial check for elements already in viewport
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('active');
+    }
+});
 
 // --- HOVER STATES ---
 const interactives = document.querySelectorAll('a, button, input, textarea, .m-item');
