@@ -406,8 +406,8 @@
         function animateCursor() {
             let dx = mouseX - bracketX;
             let dy = mouseY - bracketY;
-            bracketX += dx * 0.15;
-            bracketY += dy * 0.15;
+            bracketX += dx * 0.35;
+            bracketY += dy * 0.35;
             bracket.style.left = `${bracketX}px`;
             bracket.style.top = `${bracketY}px`;
             requestAnimationFrame(animateCursor);
