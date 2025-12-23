@@ -3,464 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINGLEMOTHEROFTWO // INDUSTRIAL</title>
+    <title>SINGLEMOTHEROFTWO // INDUSTRIAL // PLAYER</title>
+    
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --bg: #030303;
-            --accent: #ff0033;
-            --text: #ffffff;
-            --panel: #0a0a0a;
-            --ease-mech: cubic-bezier(0.8, 0, 0.2, 1);
-        }
-
-        @keyframes grain {
-            0%, 100% { transform:translate(0, 0) }
-            10% { transform:translate(-5%, -10%) }
-            20% { transform:translate(-15%, 5%) }
-            30% { transform:translate(7%, -15%) }
-            40% { transform:translate(-5%, 20%) }
-            50% { transform:translate(-15%, 10%) }
-            60% { transform:translate(15%, 0) }
-            70% { transform:translate(0, 15%) }
-            80% { transform:translate(3%, 15%) }
-            90% { transform:translate(-10%, 10%) }
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
-
-        body {
-            background-color: var(--bg);
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            overflow-x: hidden;
-            line-height: 1.1;
-        }
-
-        /* --- VISUAL TEXTURE LAYERS --- */
-        .noise {
-            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
-            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.08; pointer-events: none; z-index: 9999;
-            animation: grain 8s steps(10) infinite;
-        }
-
-        .grid-bg {
-            position: fixed; inset: 0;
-            background-image: 
-                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 10vw 10vw;
-            pointer-events: none; z-index: 0;
-        }
-
-        .scanline {
-            position: fixed; top: 0; left: 0; width: 100%; height: 5px;
-            background: rgba(255, 0, 51, 0.05);
-            z-index: 10000; pointer-events: none;
-            animation: scan 10s linear infinite;
-        }
-
-        @keyframes scan {
-            from { transform: translateY(-100vh); }
-            to { transform: translateY(100vh); }
-        }
-
-        /* --- HUD PRECISION CURSOR --- */
-        #cursor-container {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 99999;
-        }
-
-        .cursor-dot {
-            position: absolute;
-            width: 4px; height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-        }
-
-        .cursor-bracket {
-            position: absolute;
-            width: 40px; height: 40px;
-            border: 1px solid rgba(255, 0, 51, 0.3);
-            transform: translate(-50%, -50%);
-            transition: all 0.3s var(--ease-mech);
-        }
-
-        .cursor-bracket::before, .cursor-bracket::after {
-            content: ''; position: absolute; width: 8px; height: 8px; border: 1px solid var(--accent);
-        }
-        .cursor-bracket::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
-        .cursor-bracket::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
-
-        body.is-hovering .cursor-bracket {
-            width: 60px; height: 60px; transform: translate(-50%, -50%) rotate(90deg);
-            border-color: var(--accent);
-        }
-
-        /* --- ANIMATION SYSTEM --- */
-        .reveal { 
-            opacity: 1; filter: blur(0px); transform: translateY(0);
-            transition: opacity 1.5s var(--ease-mech), transform 1.5s var(--ease-mech), filter 1.5s var(--ease-mech);
-        }
-        
-        .js-active .reveal { opacity: 0; filter: blur(20px); transform: translateY(50px); }
-
-        .reveal.active { opacity: 1; filter: blur(0px); transform: translateY(0); }
-
-        /* Staggered Children */
-        .reveal-parent.active .reveal-child {
-            opacity: 1; transform: translateY(0); filter: blur(0px);
-        }
-        .js-active .reveal-child {
-            opacity: 0; transform: translateY(20px); filter: blur(10px);
-            transition: opacity 1s var(--ease-mech), transform 1s var(--ease-mech), filter 1s var(--ease-mech);
-        }
-
-        /* --- SECTIONS --- */
-        section { padding: 15vh 8vw; min-height: 100vh; position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
-
-        /* --- HERO --- */
-        .hero-title {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(3rem, 16vw, 15rem);
-            line-height: 0.9;
-            letter-spacing: -0.06em;
-            font-weight: 700;
-            padding: 20px 0;
-            mix-blend-mode: difference;
-        }
-        .hero-title span { display: block; }
-        .hero-sub {
-            margin-top: 30px;
-            color: var(--accent);
-            font-weight: 900;
-            letter-spacing: 0.8em;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 2px solid var(--accent);
-            width: fit-content;
-            animation: typing 4s steps(40) infinite alternate;
-        }
-
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-
-        /* --- MARQUEE --- */
-        .marquee-wrap {
-            position: absolute; top: 5vh; left: 0; width: 100%;
-            overflow: hidden; background: rgba(255,0,51,0.05);
-            padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.05);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .marquee {
-            display: flex; white-space: nowrap; font-size: 10px; font-weight: 900;
-            color: rgba(255,255,255,0.2); letter-spacing: 5px;
-            animation: marquee 30s linear infinite;
-        }
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-        /* --- INFO SECTION --- */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 5vw;
-            margin-top: 5vh;
-        }
-        .info-item { position: relative; padding: 40px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01); }
-        .info-item::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--accent); transition: 0.6s var(--ease-mech); }
-        .info-item:hover::before { height: 100%; }
-        
-        .info-item h3 { font-family: 'Syncopate'; font-size: 1rem; color: var(--accent); margin-bottom: 20px; }
-        .info-item p { color: #888; line-height: 1.8; font-size: 0.9rem; }
-
-        /* --- GALLERY --- */
-        .mosaic {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 20px;
-            margin-top: 5vh;
-        }
-        .m-item {
-            position: relative;
-            background: #111;
-            overflow: hidden;
-            height: 50vh;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .m-item img {
-            width: 100%; height: 120%; object-fit: cover; /* taller for parallax */
-            filter: grayscale(1) brightness(0.5);
-            transition: filter 0.5s;
-        }
-        .m-item:hover img { filter: grayscale(0) brightness(1); }
-
-        .m-1 { grid-column: span 7; height: 70vh; }
-        .m-2 { grid-column: span 5; height: 40vh; margin-top: 10vh; }
-        .m-3 { grid-column: span 4; height: 50vh; margin-top: -15vh; }
-        .m-4 { grid-column: span 8; height: 50vh; }
-
-        /* --- SOUND --- */
-        .sound-container { margin-top: 10vh; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); }
-        .sound-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            padding: 50px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-            overflow: hidden;
-        }
-        .sound-row::before {
-            content: ''; position: absolute; inset: 0;
-            background: var(--accent); transform: scaleY(0);
-            transform-origin: bottom; transition: transform 0.4s var(--ease-mech);
-            z-index: -1;
-        }
-        .sound-row:hover::before { transform: scaleY(1); }
-        .sound-row:hover { padding-left: 30px; color: #fff; }
-        .sound-row h3 { font-family: 'Syncopate'; font-size: 4vw; mix-blend-mode: exclusion; }
-        .sound-row span { font-size: 0.8rem; align-self: center; text-transform: uppercase; color: #666; mix-blend-mode: difference; }
-
-        /* --- BOOKING --- */
-        .booking-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 10vw; margin-top: 5vh; }
-        .booking-text h2 { font-family: 'Syncopate'; font-size: 5vw; line-height: 1; margin-bottom: 20px; }
-        .booking-text p { color: #666; line-height: 1.6; }
-
-        .form-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .input-box { border-bottom: 1px solid #333; position: relative; padding: 20px 0; }
-        .input-box label { font-size: 10px; color: var(--accent); font-weight: 900; display: block; margin-bottom: 10px; letter-spacing: 2px; }
-        .input-box input, .input-box textarea {
-            width: 100%; background: transparent; border: none; outline: none;
-            color: #fff; font-family: 'Inter'; font-size: 1.1rem;
-        }
-        .full { grid-column: span 2; }
-        
-        .submit-trigger {
-            grid-column: span 2;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 30px;
-            font-family: 'Syncopate';
-            font-size: 0.9rem;
-            transition: 0.3s;
-            margin-top: 20px;
-            position: relative; overflow: hidden;
-        }
-        .submit-trigger:hover { background: var(--accent); color: white; }
-
-        footer { padding: 60px 8vw; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; font-size: 10px; color: #444; background: rgba(0,0,0,0.5); }
-
-        @media (max-width: 768px) {
-            .info-grid { grid-template-columns: 1fr; }
-            .booking-layout { grid-template-columns: 1fr; }
-            .form-panel { grid-template-columns: 1fr; }
-            .full { grid-column: span 1; }
-            .submit-trigger { grid-column: span 1; }
-            .sound-row { grid-template-columns: 1fr; gap: 10px; }
-        }
-
-    </style>
+    <!-- STYLES -->
+    <link rel="stylesheet" href="assets/style.css">
 </head>
-<body class="js-active">
+<body>
     
-    <div class="noise"></div>
-    <div class="grid-bg"></div>
-    <div class="scanline"></div>
+    <div class="container">
+        <!-- LEFT PANEL: PLAYER -->
+        <div class="left-panel">
+            <div class="brand-header">
+                <h1>SINGLE<span>MOTHER</span><br>OF_TWO</h1>
+            </div>
 
-    <div id="cursor-container">
-        <div class="cursor-dot" id="dot"></div>
-        <div class="cursor-bracket" id="bracket"></div>
+            <div class="turntable-wrapper">
+                <div class="record-disk">
+                    <div class="label-sticker">
+                        <!-- Placeholder Art for Label -->
+                        <img src="public/1.jpg" alt="Label Art">
+                    </div>
+                </div>
+                <div class="tone-arm"></div>
+            </div>
+
+            <div class="controls-area">
+                <div class="track-info-display">
+                    <h2 id="track-title" class="font-display">LOADING...</h2>
+                    <p id="track-artist">SINGLEMOTHEROFTWO</p>
+                </div>
+
+                <div class="playback-controls">
+                    <button class="btn-icon" id="prev-btn">⏮</button>
+                    <button class="btn-main" id="play-btn">PLAY</button>
+                    <button class="btn-icon" id="next-btn">⏭</button>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; padding-top: 10px; font-size: 0.8rem; color: #666;">
+                    <span id="time-current">0:00</span>
+                    <span id="time-total">0:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: CONTENT -->
+        <div class="right-panel">
+            <!-- RELEASES LIST -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span>// RELEASES</span>
+                    <span>SELECT TRACK</span>
+                </div>
+                <div class="track-list">
+                    <div class="track-item active">
+                        <h3>ISOLATION WARD</h3>
+                        <span class="track-meta">EP / 2024</span>
+                    </div>
+                    <div class="track-item">
+                        <h3>DOMESTIC DECAY</h3>
+                        <span class="track-meta">LP / 2023</span>
+                    </div>
+                    <div class="track-item">
+                        <h3>VOLTAGE_LEAK</h3>
+                        <span class="track-meta">SINGLE / 2023</span>
+                    </div>
+                    <div class="track-item">
+                        <h3>STRUCTURAL RHYTHM</h3>
+                        <span class="track-meta">DEMO / 2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BIO -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span>// BIOGRAPHY</span>
+                    <span>ABOUT</span>
+                </div>
+                <p style="line-height: 1.6; color: #ccc; margin-bottom: 20px;">
+                    SINGLEMOTHEROFTWO is the DJ moniker of an artist exploring the intersection of domestic noise and functional rhythm. Specializing in structural sound design, his sets construct stripped-back, high-intensity soundscapes tailored for focused industrial environments.
+                </p>
+                <p style="line-height: 1.6; color: #888;">
+                    Focusing on analog synthesis and percussion-driven sequencing, his performance style is defined by its metallic textures and low-frequency depth.
+                </p>
+            </div>
+
+            <!-- GALLERY -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span>// VISUAL_ARCHIVE</span>
+                    <span>GALLERY</span>
+                </div>
+                <div class="gallery-grid">
+                    <div class="gallery-item"><img src="public/1.jpg" alt="Visual"></div>
+                    <div class="gallery-item"><img src="public/2.jpg" alt="Visual"></div>
+                    <div class="gallery-item"><img src="public/3.jpg" alt="Visual"></div>
+                    <div class="gallery-item"><img src="public/4.jpg" alt="Visual"></div>
+                </div>
+            </div>
+
+            <!-- BOOKING -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span>// BOOKING</span>
+                    <span>CONTACT</span>
+                </div>
+                <form class="booking-form">
+                    <div class="form-group">
+                        <label>FROM</label>
+                        <input type="email" placeholder="email@address.com">
+                    </div>
+                    <div class="form-group">
+                        <label>MESSAGE</label>
+                        <textarea rows="4" placeholder="Inquiry details..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-main" style="width: fit-content; margin-top: 10px;">SEND</button>
+                </form>
+            </div>
+            
+            <footer style="margin-top: 50px; font-size: 0.7rem; color: #444; text-transform: uppercase;">
+                SINGLEMOTHEROFTWO © 2025 // INDUSTRIAL DESIGN
+            </footer>
+
+        </div>
     </div>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="marquee-wrap">
-            <div class="marquee">
-                SINGLEMOTHEROFTWO // INDUSTRIAL // 145BPM // DOMESTIC_BRUTALISM // ANALOG_RECOVERY // SINGLEMOTHEROFTWO // INDUSTRIAL // 145BPM // DOMESTIC_BRUTALISM // ANALOG_RECOVERY
-            </div>
-        </div>
-        <div class="reveal">
-            <h1 class="hero-title">
-                <span>SINGLE</span>
-                <span style="color:var(--accent)">MOTHER</span>
-                <span>OF_TWO</span>
-            </h1>
-            <p class="hero-sub">STRUCTURAL_RHYTHM_PROTOCOL</p>
-        </div>
-    </section>
-
-    <!-- BIOGRAPHY SECTION -->
-    <section class="reveal-parent">
-        <h2 class="reveal-child" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// BIOGRAPHY</h2>
-        <div class="info-grid">
-            <div class="info-item reveal-child" style="transition-delay: 0.1s;">
-                <h3>THE_ARTIST</h3>
-                <p>SINGLEMOTHEROFTWO is the DJ moniker of an artist exploring the intersection of domestic noise and functional rhythm. Specializing in structural sound design, his sets construct stripped-back, high-intensity soundscapes tailored for focused industrial environments.</p>
-            </div>
-            <div class="info-item reveal-child" style="transition-delay: 0.2s;">
-                <h3>THE_APPROACH</h3>
-                <p>Focusing on analog synthesis and percussion-driven sequencing, his performance style is defined by its metallic textures and low-frequency depth. Each set is a curated exploration of rhythmic discipline and textural evolution.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- GALLERY SECTION -->
-    <section class="reveal-parent">
-        <h2 class="reveal-child" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// VISUAL_ARCHIVE</h2>
-        <div class="mosaic">
-            <div class="m-item m-1 reveal-child" style="transition-delay: 0.1s;"><img src="public/1.jpg" alt="Visual 1" class="parallax"></div>
-            <div class="m-item m-2 reveal-child" style="transition-delay: 0.2s;"><img src="public/2.jpg" alt="Visual 2" class="parallax"></div>
-            <div class="m-item m-3 reveal-child" style="transition-delay: 0.3s;"><img src="public/3.jpg" alt="Visual 3" class="parallax"></div>
-            <div class="m-item m-4 reveal-child" style="transition-delay: 0.4s;"><img src="public/4.jpg" alt="Visual 4" class="parallax"></div>
-        </div>
-    </section>
-
-    <!-- SOUND SECTION -->
-    <section class="reveal-parent">
-        <h2 class="reveal-child" style="font-family:'Syncopate'; font-size: 0.8rem; color: #444; margin-bottom: 30px;">// RELEASES</h2>
-        <div class="sound-container">
-            <a href="#" class="sound-row reveal-child" style="transition-delay: 0.1s;">
-                <h3>ISOLATION WARD</h3>
-                <span>EP / 2024</span>
-                <span style="text-align: right;">[LISTENING_ROOM]</span>
-            </a>
-            <a href="#" class="sound-row reveal-child" style="transition-delay: 0.2s;">
-                <h3>DOMESTIC DECAY</h3>
-                <span>LP / 2023</span>
-                <span style="text-align: right;">[LISTENING_ROOM]</span>
-            </a>
-            <a href="#" class="sound-row reveal-child" style="transition-delay: 0.3s;">
-                <h3>VOLTAGE_LEAK</h3>
-                <span>SINGLE / 2023</span>
-                <span style="text-align: right;">[LISTENING_ROOM]</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- BOOKING SECTION -->
-    <section class="reveal-parent">
-        <div class="booking-layout">
-            <div class="booking-text reveal-child">
-                <h2>BOOKINGS &<br>INQUIRIES</h2>
-                <p>Currently accepting performance and collaboration inquiries for 2025/2026. Please provide event details and contact information below.</p>
-            </div>
-            
-            <form class="form-panel reveal-child" style="transition-delay: 0.2s;">
-                <div class="input-box">
-                    <label>PROMOTER / AGENCY</label>
-                    <input type="text" placeholder="Your Organization">
-                </div>
-                <div class="input-box">
-                    <label>CONTACT_MAIL</label>
-                    <input type="email" placeholder="Email Address">
-                </div>
-                <div class="input-box">
-                    <label>EVENT_LOCATION</label>
-                    <input type="text" placeholder="City, Country">
-                </div>
-                <div class="input-box">
-                    <label>EVENT_DATE</label>
-                    <input type="text" placeholder="DD / MM / YY">
-                </div>
-                <div class="input-box full">
-                    <label>ADDITIONAL_INFO</label>
-                    <textarea placeholder="Tell us about the venue and sound system..."></textarea>
-                </div>
-                <button class="submit-trigger">SEND INQUIRY</button>
-            </form>
-        </div>
-    </section>
-
-    <footer>
-        <span>SINGLEMOTHEROFTWO // EST. 2025</span>
-        <span>BRUTALIST ARCHIVE V4.0</span>
-    </footer>
-
-    <script>
-        // --- HUD CURSOR LOGIC ---
-        const dot = document.getElementById('dot');
-        const bracket = document.getElementById('bracket');
-        
-        let mouseX = 0, mouseY = 0;
-        let bracketX = 0, bracketY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            dot.style.left = `${mouseX}px`;
-            dot.style.top = `${mouseY}px`;
-        });
-
-        function animateCursor() {
-            let dx = mouseX - bracketX;
-            let dy = mouseY - bracketY;
-            bracketX += dx * 0.35;
-            bracketY += dy * 0.35;
-            bracket.style.left = `${bracketX}px`;
-            bracket.style.top = `${bracketY}px`;
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        // --- REVEAL ON SCROLL ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { 
-            threshold: 0.05,
-            rootMargin: '0px 0px -100px 0px'
-        });
-
-        document.querySelectorAll('.reveal, .reveal-parent').forEach(el => {
-            observer.observe(el);
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight) {
-                el.classList.add('active');
-            }
-        });
-
-        // --- PARALLAX & EXTRA ANIMATION ---
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            
-            // Parallax Images
-            document.querySelectorAll('.parallax').forEach(img => {
-                const parent = img.parentElement;
-                const rect = parent.getBoundingClientRect();
-                const offset = (window.innerHeight - rect.top) * 0.1;
-                img.style.transform = `translateY(${offset - 20}px)`;
-            });
-
-            // Grid Movement
-            document.querySelector('.grid-bg').style.transform = `translateY(${scrolled * 0.2}px)`;
-        });
-
-        // Fail-safe
-        setTimeout(() => {
-            document.querySelectorAll('.reveal, .reveal-parent').forEach(el => el.classList.add('active'));
-        }, 3000);
-
-        // --- HOVER STATES ---
-        const interactives = document.querySelectorAll('a, button, input, textarea, .m-item');
-        interactives.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
-        });
-    </script>
+    <!-- SCRIPTS -->
+    <script src="assets/main.js"></script>
 </body>
 </html>
