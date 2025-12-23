@@ -1,172 +1,210 @@
 /**
- * SINGLEMOTHEROFTWO // VINYL PLAYER LOGIC
+ * SINGLEMOTHEROFTWO - Vinyl Player & Interactions
+ * Redesign inspired by Project Turntable
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const record = document.querySelector('.record-disk');
-    const playBtn = document.getElementById('play-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const trackTitle = document.getElementById('track-title');
-    const trackArtist = document.getElementById('track-artist');
-    const timeCurrent = document.getElementById('time-current');
-    const timeTotal = document.getElementById('time-total');
-    const toneArm = document.querySelector('.tone-arm');
-    
+    // --- ELEMENTS ---
+    const vinyl = document.getElementById('vinyl');
+    const toneArm = document.getElementById('toneArm');
+    const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const nowPlayingTitle = document.getElementById('nowPlayingTitle');
+    const nowPlayingArtist = document.getElementById('nowPlayingArtist');
+    const vinylArt = document.getElementById('vinyl-art');
+    const trackItems = document.querySelectorAll('.track-item');
+
+    // --- STATE ---
     let isPlaying = false;
+    let currentTrackIndex = 0;
     let rotation = 0;
-    let velocity = 0;
-    let lastMouseBefore = 0;
     let isDragging = false;
-    let rafId;
+    let lastAngle = 0;
+    let velocity = 0;
+    let animationId;
 
-    // Mock Tracks Data
+    // --- TRACKS DATA ---
     const tracks = [
-        { title: "ISOLATION WARD", artist: "SINGLEMOTHEROFTWO", duration: "04:32" },
-        { title: "DOMESTIC DECAY", artist: "SINGLEMOTHEROFTWO", duration: "03:45" },
-        { title: "VOLTAGE_LEAK", artist: "SINGLEMOTHEROFTWO", duration: "05:12" },
-        { title: "STRUCTURAL RHYTHM", artist: "SINGLEMOTHEROFTWO", duration: "04:01" }
+        { title: "ISOLATION WARD", artist: "SINGLEMOTHEROFTWO", art: "public/1.jpg" },
+        { title: "DOMESTIC DECAY", artist: "SINGLEMOTHEROFTWO", art: "public/2.jpg" },
+        { title: "VOLTAGE_LEAK", artist: "SINGLEMOTHEROFTWO", art: "public/3.jpg" },
+        { title: "STRUCTURAL RHYTHM", artist: "SINGLEMOTHEROFTWO", art: "public/4.jpg" }
     ];
-    let currentTrackIdx = 0;
 
-    // --- AUDIO SIMULATION ---
-    // In a real app, this would control an <audio> element.
-    // Here we simulate progress.
-    let playProgress = 0; // 0 to 100
-    
-    function loadTrack(idx) {
-        trackTitle.textContent = tracks[idx].title;
-        trackArtist.textContent = tracks[idx].artist;
-        timeTotal.textContent = tracks[idx].duration;
-        playProgress = 0;
-        updateTimeDisplay();
+    // --- FUNCTIONS ---
+    function loadTrack(index) {
+        currentTrackIndex = index;
+        const track = tracks[index];
         
-        // Update functionality for list items
-        document.querySelectorAll('.track-item').forEach((item, i) => {
-            if (i === idx) item.classList.add('active');
-            else item.classList.remove('active');
+        nowPlayingTitle.textContent = track.title;
+        nowPlayingArtist.textContent = track.artist;
+        vinylArt.src = track.art;
+        
+        // Update active state in tracklist
+        trackItems.forEach((item, i) => {
+            item.classList.toggle('active', i === index);
         });
     }
 
     function togglePlay() {
         isPlaying = !isPlaying;
-        updatePlayButton();
         
         if (isPlaying) {
-            velocity = 1; // Normal speed
+            vinyl.classList.add('spinning');
             toneArm.classList.add('playing');
+            playBtn.textContent = '⏸';
         } else {
+            vinyl.classList.remove('spinning');
             toneArm.classList.remove('playing');
+            playBtn.textContent = '▶';
         }
     }
 
-    function updatePlayButton() {
-        playBtn.textContent = isPlaying ? "PAUSE" : "PLAY";
-    }
-
-    // --- ANIMATION LOOP ---
-    function update() {
-        // Friction when dragging not happening, but stopping
-        if (!isPlaying && !isDragging) {
-            velocity *= 0.95;
-            if (Math.abs(velocity) < 0.01) velocity = 0;
-        }
+    function nextTrack() {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        loadTrack(currentTrackIndex);
         
-        // Recover speed if playing and not dragging
-        if (isPlaying && !isDragging) {
-            velocity += (1 - velocity) * 0.1;
-        }
-
-        rotation += velocity * 2; // Speed multiplier
-        record.style.transform = `rotate(${rotation}deg)`;
-
+        // Brief pause effect
         if (isPlaying) {
-            playProgress += 0.05; // Simulate time
-            if (playProgress >= 100) {
-                playProgress = 0;
-                // Auto next?
-            }
-            updateTimeDisplay();
+            vinyl.classList.remove('spinning');
+            setTimeout(() => vinyl.classList.add('spinning'), 100);
         }
-
-        rafId = requestAnimationFrame(update);
     }
-    
-    function updateTimeDisplay() {
-        // Convert progress to MM:SS (mock)
-        // Just mocking for visual
-        let totalSeconds = 240; // approx 4 mins
-        let currentSeconds = Math.floor((playProgress / 100) * totalSeconds);
-        let mins = Math.floor(currentSeconds / 60);
-        let secs = currentSeconds % 60;
-        timeCurrent.textContent = `${mins}:${secs < 10 ? '0'+secs : secs}`;
+
+    function prevTrack() {
+        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        loadTrack(currentTrackIndex);
+        
+        if (isPlaying) {
+            vinyl.classList.remove('spinning');
+            setTimeout(() => vinyl.classList.add('spinning'), 100);
+        }
     }
 
     // --- DRAG INTERACTION ---
-    record.addEventListener('mousedown', (e) => {
+    function getAngle(e, element) {
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+        const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+        
+        return Math.atan2(clientY - centerY, clientX - centerX) * (180 / Math.PI);
+    }
+
+    function handleDragStart(e) {
+        if (isPlaying) return; // Only allow drag when paused
+        
         isDragging = true;
-        lastMouseBefore = getAngle(e);
-        record.style.transition = 'none';
-        document.body.style.cursor = 'grabbing';
-    });
+        lastAngle = getAngle(e, vinyl);
+        vinyl.style.cursor = 'grabbing';
+        vinyl.style.animation = 'none';
+        
+        e.preventDefault();
+    }
 
-    window.addEventListener('mousemove', (e) => {
+    function handleDragMove(e) {
         if (!isDragging) return;
-        const currentAngle = getAngle(e);
-        const delta = currentAngle - lastMouseBefore;
         
-        // Handle wrapping from 360 to 0
-        let diff = delta;
-        if (diff > 180) diff -= 360;
-        if (diff < -180) diff += 360;
-
-        rotation += diff;
-        velocity = diff; // Impulse
+        const currentAngle = getAngle(e, vinyl);
+        let delta = currentAngle - lastAngle;
         
-        lastMouseBefore = currentAngle;
-    });
+        // Handle wrap-around
+        if (delta > 180) delta -= 360;
+        if (delta < -180) delta += 360;
+        
+        rotation += delta;
+        vinyl.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+        velocity = delta;
+        lastAngle = currentAngle;
+    }
 
-    window.addEventListener('mouseup', () => {
-        if (isDragging) {
-            isDragging = false;
-            document.body.style.cursor = 'auto';
+    function handleDragEnd() {
+        if (!isDragging) return;
+        
+        isDragging = false;
+        vinyl.style.cursor = 'grab';
+        
+        // Apply momentum
+        function applyMomentum() {
+            if (isDragging || Math.abs(velocity) < 0.1) {
+                velocity = 0;
+                return;
+            }
+            
+            rotation += velocity;
+            velocity *= 0.95; // Friction
+            vinyl.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+            
+            animationId = requestAnimationFrame(applyMomentum);
         }
-    });
-
-    function getAngle(e) {
-        const rect = record.getBoundingClientRect();
-        const center = {
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2
-        };
-        const x = e.clientX - center.x;
-        const y = e.clientY - center.y;
-        return Math.atan2(y, x) * (180 / Math.PI);
+        
+        applyMomentum();
     }
 
     // --- EVENT LISTENERS ---
     playBtn.addEventListener('click', togglePlay);
-    
-    nextBtn.addEventListener('click', () => {
-        currentTrackIdx = (currentTrackIdx + 1) % tracks.length;
-        loadTrack(currentTrackIdx);
-    });
+    nextBtn.addEventListener('click', nextTrack);
+    prevBtn.addEventListener('click', prevTrack);
 
-    prevBtn.addEventListener('click', () => {
-        currentTrackIdx = (currentTrackIdx - 1 + tracks.length) % tracks.length;
-        loadTrack(currentTrackIdx);
-    });
-
-    // Track List Clicks
-    document.querySelectorAll('.track-item').forEach((item, idx) => {
+    // Track list clicks
+    trackItems.forEach((item, index) => {
         item.addEventListener('click', () => {
-            currentTrackIdx = idx;
-            loadTrack(idx);
-            if (!isPlaying) togglePlay();
+            loadTrack(index);
+            if (!isPlaying) {
+                togglePlay();
+            }
         });
     });
 
-    // Init
+    // Vinyl drag (mouse)
+    vinyl.addEventListener('mousedown', handleDragStart);
+    window.addEventListener('mousemove', handleDragMove);
+    window.addEventListener('mouseup', handleDragEnd);
+
+    // Vinyl drag (touch)
+    vinyl.addEventListener('touchstart', handleDragStart, { passive: false });
+    window.addEventListener('touchmove', handleDragMove, { passive: false });
+    window.addEventListener('touchend', handleDragEnd);
+
+    // --- SMOOTH SCROLL ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // --- INTERSECTION OBSERVER FOR ANIMATIONS ---
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe sections for fade-in
+    document.querySelectorAll('section, .album-card').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        observer.observe(el);
+    });
+
+    // Initialize
     loadTrack(0);
-    update();
+    
+    console.log('🎵 SINGLEMOTHEROFTWO Player Initialized');
 });
