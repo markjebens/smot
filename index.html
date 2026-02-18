@@ -3,195 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINGLEMOTHEROFTWO | Industrial DJ</title>
-    
-    <!-- SEO -->
-    <meta name="description" content="SINGLEMOTHEROFTWO - Industrial DJ specializing in structural sound design, analog synthesis, and percussion-driven sequencing.">
-    
+    <title>SINGLEMOTHEROFTWO</title>
+    <meta name="description" content="SINGLEMOTHEROFTWO — Industrial DJ. Structural sound design, analog synthesis, percussion-driven sequencing.">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
     <!-- Styles -->
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
     <!-- HEADER -->
-    <header class="header">
-        <div class="logo">
-            <span class="logo-part red">SINGLE</span>
-            <span class="logo-part white">MOTHER</span>
-        </div>
-        <nav class="nav-links">
-            <a href="#about">About</a>
-            <a href="#music">Music</a>
-            <a href="#player">Listen</a>
-            <a href="#contact">Contact</a>
+    <header class="header" id="header">
+        <a href="#" class="logo-link">
+            <span class="logo-text">SMOT</span>
+        </a>
+        <nav class="nav">
+            <a href="#about" class="nav-link" data-text="About">About</a>
+            <a href="#releases" class="nav-link" data-text="Releases">Releases</a>
+            <a href="#contact" class="nav-link" data-text="Contact">Contact</a>
         </nav>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="hero-image">
-            <img src="public/1.jpg" alt="SINGLEMOTHEROFTWO">
-        </div>
-        <div class="hero-content">
-            <h1 class="hero-name">
-                SINGLE<br>
-                <span class="accent">MOTHER</span><br>
-                OF_TWO
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-inner">
+            <div class="hero-tag">
+                <span class="tag-line">Industrial DJ</span>
+                <span class="tag-dot"></span>
+                <span class="tag-line">Berlin</span>
+            </div>
+
+            <h1 class="hero-title">
+                <span class="hero-line" data-reveal>
+                    <span class="hero-word">SINGLE</span>
+                </span>
+                <span class="hero-line" data-reveal>
+                    <span class="hero-word accent">MOTHER</span>
+                </span>
+                <span class="hero-line" data-reveal>
+                    <span class="hero-word">OF_TWO</span>
+                </span>
             </h1>
-            <p class="hero-tagline">
-                Industrial DJ crafting structural soundscapes. Analog synthesis meets percussion-driven sequencing.
-            </p>
-            <a href="#player" class="hero-cta">
-                <span>▶</span> LISTEN NOW
-            </a>
-        </div>
-    </section>
 
-    <!-- ABOUT SECTION -->
-    <section class="about" id="about">
-        <div class="about-image">
-            <img src="public/2.jpg" alt="About SINGLEMOTHEROFTWO">
-        </div>
-        <div class="about-content">
-            <span class="section-label">About</span>
-            <h2 class="about-title">Exploring the intersection of domestic noise and functional rhythm</h2>
-            <p class="about-text">
-                SINGLEMOTHEROFTWO is the DJ moniker of an artist exploring the intersection of domestic noise and functional rhythm. Specializing in structural sound design, his sets construct stripped-back, high-intensity soundscapes tailored for focused industrial environments.
-            </p>
-            <p class="about-text">
-                Focusing on analog synthesis and percussion-driven sequencing, his performance style is defined by its metallic textures and low-frequency depth. Each set is a curated exploration of rhythmic discipline and textural evolution.
-            </p>
-        </div>
-    </section>
+            <div class="hero-image-wrap">
+                <img src="public/1.jpg" alt="SINGLEMOTHEROFTWO" class="hero-img" id="heroImg">
+                <div class="hero-img-overlay"></div>
+            </div>
 
-    <!-- VINYL PLAYER SECTION -->
-    <section class="player-section" id="player">
-        <div class="container">
-            <div class="player-grid">
-                <div class="player-info">
-                    <span class="section-label" style="background: rgba(255,255,255,0.1);">Now Spinning</span>
-                    <h2>RELEASES</h2>
-                    <p style="opacity: 0.7; margin-top: 10px;">Click a track to load it onto the turntable</p>
-                    
-                    <div class="tracklist">
-                        <div class="track-item active" data-index="0">
-                            <span class="track-title">ISOLATION WARD</span>
-                            <span class="track-meta">EP / 2024</span>
-                        </div>
-                        <div class="track-item" data-index="1">
-                            <span class="track-title">DOMESTIC DECAY</span>
-                            <span class="track-meta">LP / 2023</span>
-                        </div>
-                        <div class="track-item" data-index="2">
-                            <span class="track-title">VOLTAGE_LEAK</span>
-                            <span class="track-meta">SINGLE / 2023</span>
-                        </div>
-                        <div class="track-item" data-index="3">
-                            <span class="track-title">STRUCTURAL RHYTHM</span>
-                            <span class="track-meta">DEMO / 2025</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="turntable-container">
-                    <div class="turntable">
-                        <div class="turntable-base"></div>
-                        <div class="vinyl-record" id="vinyl">
-                            <div class="vinyl-label">
-                                <img src="public/1.jpg" alt="Album Art" id="vinyl-art">
-                            </div>
-                        </div>
-                        <div class="tone-arm" id="toneArm"></div>
-                    </div>
-                    
-                    <div class="player-controls">
-                        <button class="control-btn" id="prevBtn">⏮</button>
-                        <button class="control-btn play-btn" id="playBtn">▶</button>
-                        <button class="control-btn" id="nextBtn">⏭</button>
-                    </div>
-                    
-                    <div class="now-playing">
-                        <p class="now-playing-label">Now Playing</p>
-                        <p class="now-playing-title" id="nowPlayingTitle">ISOLATION WARD</p>
-                        <p class="now-playing-artist" id="nowPlayingArtist">SINGLEMOTHEROFTWO</p>
-                    </div>
-                </div>
+            <div class="hero-footer">
+                <p class="hero-desc">Structural soundscapes.<br>Analog synthesis.<br>Percussion-driven sequencing.</p>
+                <a href="#releases" class="cta-btn magnetic" id="heroCta">
+                    <span class="cta-inner">Listen</span>
+                    <span class="cta-arrow">↓</span>
+                </a>
             </div>
         </div>
-    </section>
 
-    <!-- MUSIC/ALBUMS SECTION -->
-    <section class="music-section" id="music">
-        <div class="container">
-            <div class="music-header">
-                <h2 class="music-title">MUSIC</h2>
-                <span class="section-label">Discography</span>
-            </div>
-            
-            <div class="albums-grid">
-                <div class="album-card">
-                    <img src="public/1.jpg" alt="Isolation Ward">
-                    <div class="album-info">
-                        <h3 class="album-title">ISOLATION WARD</h3>
-                        <p class="album-year">2024 · EP</p>
-                    </div>
-                </div>
-                <div class="album-card">
-                    <img src="public/2.jpg" alt="Domestic Decay">
-                    <div class="album-info">
-                        <h3 class="album-title">DOMESTIC DECAY</h3>
-                        <p class="album-year">2023 · LP</p>
-                    </div>
-                </div>
-                <div class="album-card">
-                    <img src="public/3.jpg" alt="Voltage Leak">
-                    <div class="album-info">
-                        <h3 class="album-title">VOLTAGE_LEAK</h3>
-                        <p class="album-year">2023 · Single</p>
-                    </div>
-                </div>
-            </div>
+        <div class="scroll-indicator">
+            <span class="scroll-line"></span>
+            <span class="scroll-label">Scroll</span>
         </div>
     </section>
 
     <!-- MARQUEE -->
-    <div class="marquee-section">
+    <div class="marquee-wrap">
         <div class="marquee-track">
-            <span class="marquee-text">TECHNO · INDUSTRIAL · DEEP HOUSE · ELECTRO · ITALO · BALEARIC · HOUSE · DISCO · TECHNO · INDUSTRIAL · DEEP HOUSE · ELECTRO · ITALO · BALEARIC · HOUSE · DISCO · </span>
-            <span class="marquee-text">TECHNO · INDUSTRIAL · DEEP HOUSE · ELECTRO · ITALO · BALEARIC · HOUSE · DISCO · TECHNO · INDUSTRIAL · DEEP HOUSE · ELECTRO · ITALO · BALEARIC · HOUSE · DISCO · </span>
+            <span class="marquee-item">TECHNO</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">INDUSTRIAL</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">DEEP HOUSE</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">ELECTRO</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">ITALO</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">BALEARIC</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">ACID</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">EBM</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">TECHNO</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">INDUSTRIAL</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">DEEP HOUSE</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">ELECTRO</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">ITALO</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">BALEARIC</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">ACID</span>
+            <span class="marquee-sep">—</span>
+            <span class="marquee-item">EBM</span>
+            <span class="marquee-sep">—</span>
         </div>
     </div>
 
-    <!-- FOOTER CTA -->
-    <section class="footer-cta" id="contact">
-        <h2 class="footer-headline">
-            LET'S SET THAT DANCE<br>
-            <span class="red">FLOOR ON FIRE.</span>
-        </h2>
-        <a href="mailto:booking@singlemotheroftwo.com" class="hero-cta">
-            BOOK NOW
-        </a>
+    <!-- ABOUT -->
+    <section class="about" id="about">
+        <div class="about-number" data-reveal-fade>01</div>
+        <div class="about-grid">
+            <div class="about-image-col">
+                <div class="about-img-wrap" data-reveal-fade>
+                    <img src="public/2.jpg" alt="About SINGLEMOTHEROFTWO" class="about-img">
+                    <div class="about-img-caption">
+                        <span>SMOT</span>
+                        <span>2024</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-text-col">
+                <span class="section-label" data-reveal-fade>About</span>
+                <h2 class="about-headline" data-reveal-fade>
+                    Domestic noise<br>meets functional<br>rhythm.
+                </h2>
+                <p class="about-body" data-reveal-fade>
+                    SINGLEMOTHEROFTWO is the DJ moniker of an artist exploring the intersection of domestic noise and functional rhythm. Specializing in structural sound design, his sets construct stripped-back, high-intensity soundscapes tailored for focused industrial environments.
+                </p>
+                <p class="about-body" data-reveal-fade>
+                    Focusing on analog synthesis and percussion-driven sequencing, his performance style is defined by its metallic textures and low-frequency depth. Each set is a curated exploration of rhythmic discipline and textural evolution.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELEASES -->
+    <section class="releases" id="releases">
+        <div class="releases-header">
+            <div class="about-number" data-reveal-fade>02</div>
+            <span class="section-label" data-reveal-fade>Releases</span>
+        </div>
+
+        <div class="releases-list">
+            <div class="release-row" data-reveal-fade data-index="0">
+                <span class="release-num">001</span>
+                <div class="release-info">
+                    <h3 class="release-title">ISOLATION WARD</h3>
+                    <span class="release-type">EP</span>
+                </div>
+                <span class="release-year">2024</span>
+                <div class="release-img-thumb">
+                    <img src="public/1.jpg" alt="Isolation Ward">
+                </div>
+            </div>
+            <div class="release-row" data-reveal-fade data-index="1">
+                <span class="release-num">002</span>
+                <div class="release-info">
+                    <h3 class="release-title">DOMESTIC DECAY</h3>
+                    <span class="release-type">LP</span>
+                </div>
+                <span class="release-year">2023</span>
+                <div class="release-img-thumb">
+                    <img src="public/2.jpg" alt="Domestic Decay">
+                </div>
+            </div>
+            <div class="release-row" data-reveal-fade data-index="2">
+                <span class="release-num">003</span>
+                <div class="release-info">
+                    <h3 class="release-title">VOLTAGE_LEAK</h3>
+                    <span class="release-type">Single</span>
+                </div>
+                <span class="release-year">2023</span>
+                <div class="release-img-thumb">
+                    <img src="public/3.jpg" alt="Voltage Leak">
+                </div>
+            </div>
+            <div class="release-row" data-reveal-fade data-index="3">
+                <span class="release-num">004</span>
+                <div class="release-info">
+                    <h3 class="release-title">STRUCTURAL RHYTHM</h3>
+                    <span class="release-type">Demo</span>
+                </div>
+                <span class="release-year">2025</span>
+                <div class="release-img-thumb">
+                    <img src="public/4.jpg" alt="Structural Rhythm">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLAYER -->
+    <section class="player-section" id="player">
+        <div class="player-wrap">
+            <div class="player-left">
+                <span class="section-label light" data-reveal-fade>Now Spinning</span>
+                <div class="now-playing-info" data-reveal-fade>
+                    <p class="np-label">Currently</p>
+                    <p class="np-title" id="nowPlayingTitle">ISOLATION WARD</p>
+                    <p class="np-artist" id="nowPlayingArtist">SINGLEMOTHEROFTWO</p>
+                </div>
+
+                <div class="tracklist" data-reveal-fade>
+                    <div class="track-item active" data-index="0">
+                        <span class="track-num">01</span>
+                        <span class="track-name">ISOLATION WARD</span>
+                        <span class="track-meta">EP · 2024</span>
+                    </div>
+                    <div class="track-item" data-index="1">
+                        <span class="track-num">02</span>
+                        <span class="track-name">DOMESTIC DECAY</span>
+                        <span class="track-meta">LP · 2023</span>
+                    </div>
+                    <div class="track-item" data-index="2">
+                        <span class="track-num">03</span>
+                        <span class="track-name">VOLTAGE_LEAK</span>
+                        <span class="track-meta">Single · 2023</span>
+                    </div>
+                    <div class="track-item" data-index="3">
+                        <span class="track-num">04</span>
+                        <span class="track-name">STRUCTURAL RHYTHM</span>
+                        <span class="track-meta">Demo · 2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="player-right" data-reveal-fade>
+                <div class="turntable-wrap">
+                    <div class="turntable">
+                        <div class="turntable-platter"></div>
+                        <div class="vinyl-record" id="vinyl">
+                            <div class="vinyl-grooves"></div>
+                            <div class="vinyl-label">
+                                <img src="public/1.jpg" alt="Album Art" id="vinyl-art">
+                            </div>
+                            <div class="vinyl-hole"></div>
+                        </div>
+                        <div class="tone-arm" id="toneArm">
+                            <div class="arm-head"></div>
+                        </div>
+                    </div>
+
+                    <div class="player-controls">
+                        <button class="ctrl-btn" id="prevBtn" aria-label="Previous">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                        </button>
+                        <button class="ctrl-btn play-btn" id="playBtn" aria-label="Play">
+                            <svg class="icon-play" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            <svg class="icon-pause" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        </button>
+                        <button class="ctrl-btn" id="nextBtn" aria-label="Next">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 3.9V8.1L8.5 12zM16 6h2v12h-2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+        <div class="about-number" data-reveal-fade>03</div>
+        <div class="contact-inner">
+            <span class="section-label" data-reveal-fade>Booking</span>
+            <h2 class="contact-headline" data-reveal-fade>
+                Let's set that<br>dance floor<br><span class="accent">on fire.</span>
+            </h2>
+            <a href="mailto:booking@singlemotheroftwo.com" class="contact-email magnetic" id="contactCta" data-reveal-fade>
+                <span class="email-text">booking@singlemotheroftwo.com</span>
+                <span class="email-arrow">→</span>
+            </a>
+        </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-left">
-            <p>© 2025 SINGLEMOTHEROFTWO</p>
-            <p style="opacity: 0.5; margin-top: 5px;">Industrial Sound Design</p>
+            <span class="footer-name">SINGLEMOTHEROFTWO</span>
+            <span class="footer-copy">© 2025</span>
         </div>
-        <div class="social-links">
-            <a href="#" class="social-link" aria-label="Instagram">📷</a>
-            <a href="#" class="social-link" aria-label="Soundcloud">🎵</a>
-            <a href="#" class="social-link" aria-label="Spotify">🎧</a>
+        <div class="footer-socials">
+            <a href="#" class="social-item" aria-label="Instagram">IG</a>
+            <a href="#" class="social-item" aria-label="Soundcloud">SC</a>
+            <a href="#" class="social-item" aria-label="Spotify">SP</a>
+            <a href="#" class="social-item" aria-label="Bandcamp">BC</a>
         </div>
     </footer>
 
-    <!-- SCRIPTS -->
     <script src="assets/main.js"></script>
 </body>
 </html>
