@@ -1,296 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SINGLEMOTHEROFTWO</title>
-    <meta name="description" content="SINGLEMOTHEROFTWO — Industrial DJ. Structural sound design, analog synthesis, percussion-driven sequencing.">
-
-    <!-- Fonts -->
+    <title>SMOT</title>
+    <meta name="description" content="SINGLEMOTHEROFTWO — Industrial DJ">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-    <!-- Styles -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@200;400;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
 
-    <!-- CUSTOM CURSOR -->
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
+    <canvas id="grain" class="grain"></canvas>
 
-    <!-- HEADER -->
-    <header class="header" id="header">
-        <a href="#" class="logo-link">
-            <span class="logo-text">SMOT</span>
-        </a>
-        <nav class="nav">
-            <a href="#about" class="nav-link" data-text="About">About</a>
-            <a href="#releases" class="nav-link" data-text="Releases">Releases</a>
-            <a href="#contact" class="nav-link" data-text="Contact">Contact</a>
-        </nav>
-    </header>
+    <!-- CURSOR -->
+    <div class="cur" id="cur"></div>
 
-    <!-- HERO -->
+    <!-- NAV — minimal, fixed, transparent -->
+    <nav class="nav" id="nav">
+        <span class="nav-name">SMOT</span>
+        <div class="nav-r">
+            <a href="#about">about</a>
+            <a href="#releases">releases</a>
+            <a href="#contact">contact</a>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════
+         HERO — full bleed, overlapping chaos
+    ═══════════════════════════════════════ -->
     <section class="hero" id="hero">
-        <div class="hero-inner">
-            <div class="hero-tag">
-                <span class="tag-line">Industrial DJ</span>
-                <span class="tag-dot"></span>
-                <span class="tag-line">Berlin</span>
+
+        <!-- Background image — full bleed -->
+        <div class="hero-bg">
+            <img src="public/1.jpg" alt="" id="heroBg">
+        </div>
+
+        <!-- Oversized rotated text behind everything -->
+        <div class="hero-bg-text" aria-hidden="true">SMOT</div>
+
+        <!-- Main title — broken, overlapping -->
+        <div class="hero-title">
+            <div class="ht-single">SINGLE</div>
+            <div class="ht-mother">
+                <span>M</span><span>O</span><span>T</span><span>H</span><span>E</span><span>R</span>
+            </div>
+            <div class="ht-oftwo">OF_TWO</div>
+        </div>
+
+        <!-- Floating metadata blocks -->
+        <div class="hero-meta-1">
+            <span class="hm-label">// INDUSTRIAL DJ</span><br>
+            <span class="hm-label">// BERLIN</span><br>
+            <span class="hm-label">// EST. 2019</span>
+        </div>
+
+        <div class="hero-meta-2">
+            <span id="liveTime" class="live-time">--:--:--</span>
+            <span class="live-tz">CET</span>
+        </div>
+
+        <!-- Diagonal rule -->
+        <div class="hero-rule"></div>
+
+        <!-- CTA -->
+        <a href="#releases" class="hero-cta">
+            <span class="hcta-num">001</span>
+            <span class="hcta-text">LISTEN</span>
+        </a>
+
+        <!-- Scroll hint -->
+        <div class="hero-scroll">
+            <div class="hs-line"></div>
+        </div>
+
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         TICKER
+    ═══════════════════════════════════════ -->
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker-t">
+            <span>TECHNO</span><b>×</b>
+            <span>INDUSTRIAL</span><b>×</b>
+            <span>DEEP HOUSE</span><b>×</b>
+            <span>EBM</span><b>×</b>
+            <span>ACID</span><b>×</b>
+            <span>ELECTRO</span><b>×</b>
+            <span>ITALO</span><b>×</b>
+            <span>NOISE</span><b>×</b>
+            <span>BALEARIC</span><b>×</b>
+            <span>TECHNO</span><b>×</b>
+            <span>INDUSTRIAL</span><b>×</b>
+            <span>DEEP HOUSE</span><b>×</b>
+            <span>EBM</span><b>×</b>
+            <span>ACID</span><b>×</b>
+            <span>ELECTRO</span><b>×</b>
+            <span>ITALO</span><b>×</b>
+            <span>NOISE</span><b>×</b>
+            <span>BALEARIC</span><b>×</b>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         ABOUT — asymmetric, image overlapping text
+    ═══════════════════════════════════════ -->
+    <section class="about" id="about">
+
+        <div class="about-index">
+            <span class="idx-num">01</span>
+            <span class="idx-line"></span>
+            <span class="idx-label">ABOUT</span>
+        </div>
+
+        <!-- Image bleeds left edge -->
+        <div class="about-img-wrap">
+            <img src="public/2.jpg" alt="" class="about-img">
+            <div class="about-img-data">
+                <span>f/1.8</span>
+                <span>ISO 800</span>
+                <span>2024</span>
+            </div>
+        </div>
+
+        <!-- Text overlaps image -->
+        <div class="about-text">
+            <h2 class="about-h">
+                <em>Domestic</em><br>
+                noise<br>
+                meets<br>
+                rhythm.
+            </h2>
+            <p class="about-p">
+                SINGLEMOTHEROFTWO is the DJ moniker of an artist exploring the intersection of domestic noise and
+                functional rhythm. Structural sound design, analog synthesis, percussion-driven sequencing.
+            </p>
+            <p class="about-p">
+                Metallic textures. Low-frequency depth. Rhythmic discipline. Textural evolution.
+            </p>
+            <div class="about-tags">
+                <span>ANALOG</span>
+                <span>PERCUSSION</span>
+                <span>STRUCTURAL</span>
+            </div>
+        </div>
+
+        <!-- Rotated side label -->
+        <div class="about-side-label" aria-hidden="true">SINGLEMOTHEROFTWO</div>
+
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         RELEASES — staggered, overlapping grid
+    ═══════════════════════════════════════ -->
+    <section class="releases" id="releases">
+
+        <div class="releases-index">
+            <span class="idx-num">02</span>
+            <span class="idx-line"></span>
+            <span class="idx-label">RELEASES</span>
+        </div>
+
+        <div class="releases-wrap">
+
+            <div class="rel rel-a" data-idx="0">
+                <div class="rel-img-wrap">
+                    <img src="public/1.jpg" alt="">
+                    <div class="rel-overlay">
+                        <span class="rel-n">001</span>
+                    </div>
+                </div>
+                <div class="rel-info">
+                    <h3 class="rel-title">ISOLATION<br>WARD</h3>
+                    <span class="rel-sub">EP · 2024</span>
+                </div>
             </div>
 
-            <h1 class="hero-title">
-                <span class="hero-line" data-reveal>
-                    <span class="hero-word">SINGLE</span>
-                </span>
-                <span class="hero-line" data-reveal>
-                    <span class="hero-word accent">MOTHER</span>
-                </span>
-                <span class="hero-line" data-reveal>
-                    <span class="hero-word">OF_TWO</span>
-                </span>
-            </h1>
-
-            <div class="hero-image-wrap">
-                <img src="public/1.jpg" alt="SINGLEMOTHEROFTWO" class="hero-img" id="heroImg">
-                <div class="hero-img-overlay"></div>
+            <div class="rel rel-b" data-idx="1">
+                <div class="rel-img-wrap">
+                    <img src="public/2.jpg" alt="">
+                    <div class="rel-overlay">
+                        <span class="rel-n">002</span>
+                    </div>
+                </div>
+                <div class="rel-info">
+                    <h3 class="rel-title">DOMESTIC<br>DECAY</h3>
+                    <span class="rel-sub">LP · 2023</span>
+                </div>
             </div>
 
-            <div class="hero-footer">
-                <p class="hero-desc">Structural soundscapes.<br>Analog synthesis.<br>Percussion-driven sequencing.</p>
-                <a href="#releases" class="cta-btn magnetic" id="heroCta">
-                    <span class="cta-inner">Listen</span>
-                    <span class="cta-arrow">↓</span>
+            <div class="rel rel-c" data-idx="2">
+                <div class="rel-img-wrap">
+                    <img src="public/3.jpg" alt="">
+                    <div class="rel-overlay">
+                        <span class="rel-n">003</span>
+                    </div>
+                </div>
+                <div class="rel-info">
+                    <h3 class="rel-title">VOLTAGE<br>_LEAK</h3>
+                    <span class="rel-sub">SINGLE · 2023</span>
+                </div>
+            </div>
+
+            <div class="rel rel-d" data-idx="3">
+                <div class="rel-img-wrap">
+                    <img src="public/4.jpg" alt="">
+                    <div class="rel-overlay">
+                        <span class="rel-n">004</span>
+                    </div>
+                </div>
+                <div class="rel-info">
+                    <h3 class="rel-title">STRUCTURAL<br>RHYTHM</h3>
+                    <span class="rel-sub">DEMO · 2025</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Big rotated background word -->
+        <div class="releases-bg-word" aria-hidden="true">MUSIC</div>
+
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         PLAYER — raw, industrial
+    ═══════════════════════════════════════ -->
+    <section class="player" id="player">
+
+        <div class="player-index">
+            <span class="idx-num">03</span>
+            <span class="idx-line"></span>
+            <span class="idx-label">NOW SPINNING</span>
+        </div>
+
+        <div class="player-inner">
+
+            <!-- Vinyl -->
+            <div class="deck">
+                <div class="platter">
+                    <div class="vinyl" id="vinyl">
+                        <div class="vgrooves"></div>
+                        <div class="vcenter">
+                            <img src="public/1.jpg" alt="" id="vinyl-art">
+                        </div>
+                        <div class="vspindle"></div>
+                    </div>
+                    <div class="tonearm" id="toneArm">
+                        <div class="ta-head"></div>
+                    </div>
+                </div>
+
+                <div class="deck-ctrl">
+                    <button class="dc" id="prevBtn" aria-label="Prev">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
+                        </svg>
+                    </button>
+                    <button class="dc dc-play" id="playBtn" aria-label="Play/Pause">
+                        <svg class="i-play" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none">
+                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                        </svg>
+                    </button>
+                    <button class="dc" id="nextBtn" aria-label="Next">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 3.9V8.1L8.5 12zM16 6h2v12h-2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Track info + list -->
+            <div class="player-right">
+                <div class="np">
+                    <div class="np-bars" id="npBars">
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                        <div class="nb"></div>
+                    </div>
+                    <p class="np-t" id="nowPlayingTitle">ISOLATION WARD</p>
+                    <p class="np-a" id="nowPlayingArtist">SINGLEMOTHEROFTWO</p>
+                </div>
+
+                <div class="tl">
+                    <div class="tl-row active" data-index="0">
+                        <span class="tl-n">01</span>
+                        <span class="tl-name">ISOLATION WARD</span>
+                        <span class="tl-meta">EP · 2024</span>
+                    </div>
+                    <div class="tl-row" data-index="1">
+                        <span class="tl-n">02</span>
+                        <span class="tl-name">DOMESTIC DECAY</span>
+                        <span class="tl-meta">LP · 2023</span>
+                    </div>
+                    <div class="tl-row" data-index="2">
+                        <span class="tl-n">03</span>
+                        <span class="tl-name">VOLTAGE_LEAK</span>
+                        <span class="tl-meta">SINGLE · 2023</span>
+                    </div>
+                    <div class="tl-row" data-index="3">
+                        <span class="tl-n">04</span>
+                        <span class="tl-name">STRUCTURAL RHYTHM</span>
+                        <span class="tl-meta">DEMO · 2025</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════
+         CONTACT — huge, raw
+    ═══════════════════════════════════════ -->
+    <section class="contact" id="contact">
+
+        <div class="contact-index">
+            <span class="idx-num">04</span>
+            <span class="idx-line"></span>
+            <span class="idx-label">BOOKING</span>
+        </div>
+
+        <div class="contact-inner">
+            <div class="contact-img-col">
+                <img src="public/3.jpg" alt="" class="contact-img">
+            </div>
+            <div class="contact-text-col">
+                <h2 class="contact-h">
+                    LET'S<br>
+                    SET THAT<br>
+                    DANCE<br>
+                    FLOOR<br>
+                    <span class="ch-stroke">ON FIRE.</span>
+                </h2>
+                <a href="mailto:booking@singlemotheroftwo.com" class="contact-email" id="contactEmail">
+                    <span class="ce-arrow">→</span>
+                    booking@singlemotheroftwo.com
                 </a>
             </div>
         </div>
 
-        <div class="scroll-indicator">
-            <span class="scroll-line"></span>
-            <span class="scroll-label">Scroll</span>
-        </div>
-    </section>
+        <!-- Huge background text -->
+        <div class="contact-bg-text" aria-hidden="true">BOOK</div>
 
-    <!-- MARQUEE -->
-    <div class="marquee-wrap">
-        <div class="marquee-track">
-            <span class="marquee-item">TECHNO</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">INDUSTRIAL</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">DEEP HOUSE</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">ELECTRO</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">ITALO</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">BALEARIC</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">ACID</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">EBM</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">TECHNO</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">INDUSTRIAL</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">DEEP HOUSE</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">ELECTRO</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">ITALO</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">BALEARIC</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">ACID</span>
-            <span class="marquee-sep">—</span>
-            <span class="marquee-item">EBM</span>
-            <span class="marquee-sep">—</span>
-        </div>
-    </div>
-
-    <!-- ABOUT -->
-    <section class="about" id="about">
-        <div class="about-number" data-reveal-fade>01</div>
-        <div class="about-grid">
-            <div class="about-image-col">
-                <div class="about-img-wrap" data-reveal-fade>
-                    <img src="public/2.jpg" alt="About SINGLEMOTHEROFTWO" class="about-img">
-                    <div class="about-img-caption">
-                        <span>SMOT</span>
-                        <span>2024</span>
-                    </div>
-                </div>
-            </div>
-            <div class="about-text-col">
-                <span class="section-label" data-reveal-fade>About</span>
-                <h2 class="about-headline" data-reveal-fade>
-                    Domestic noise<br>meets functional<br>rhythm.
-                </h2>
-                <p class="about-body" data-reveal-fade>
-                    SINGLEMOTHEROFTWO is the DJ moniker of an artist exploring the intersection of domestic noise and functional rhythm. Specializing in structural sound design, his sets construct stripped-back, high-intensity soundscapes tailored for focused industrial environments.
-                </p>
-                <p class="about-body" data-reveal-fade>
-                    Focusing on analog synthesis and percussion-driven sequencing, his performance style is defined by its metallic textures and low-frequency depth. Each set is a curated exploration of rhythmic discipline and textural evolution.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- RELEASES -->
-    <section class="releases" id="releases">
-        <div class="releases-header">
-            <div class="about-number" data-reveal-fade>02</div>
-            <span class="section-label" data-reveal-fade>Releases</span>
-        </div>
-
-        <div class="releases-list">
-            <div class="release-row" data-reveal-fade data-index="0">
-                <span class="release-num">001</span>
-                <div class="release-info">
-                    <h3 class="release-title">ISOLATION WARD</h3>
-                    <span class="release-type">EP</span>
-                </div>
-                <span class="release-year">2024</span>
-                <div class="release-img-thumb">
-                    <img src="public/1.jpg" alt="Isolation Ward">
-                </div>
-            </div>
-            <div class="release-row" data-reveal-fade data-index="1">
-                <span class="release-num">002</span>
-                <div class="release-info">
-                    <h3 class="release-title">DOMESTIC DECAY</h3>
-                    <span class="release-type">LP</span>
-                </div>
-                <span class="release-year">2023</span>
-                <div class="release-img-thumb">
-                    <img src="public/2.jpg" alt="Domestic Decay">
-                </div>
-            </div>
-            <div class="release-row" data-reveal-fade data-index="2">
-                <span class="release-num">003</span>
-                <div class="release-info">
-                    <h3 class="release-title">VOLTAGE_LEAK</h3>
-                    <span class="release-type">Single</span>
-                </div>
-                <span class="release-year">2023</span>
-                <div class="release-img-thumb">
-                    <img src="public/3.jpg" alt="Voltage Leak">
-                </div>
-            </div>
-            <div class="release-row" data-reveal-fade data-index="3">
-                <span class="release-num">004</span>
-                <div class="release-info">
-                    <h3 class="release-title">STRUCTURAL RHYTHM</h3>
-                    <span class="release-type">Demo</span>
-                </div>
-                <span class="release-year">2025</span>
-                <div class="release-img-thumb">
-                    <img src="public/4.jpg" alt="Structural Rhythm">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PLAYER -->
-    <section class="player-section" id="player">
-        <div class="player-wrap">
-            <div class="player-left">
-                <span class="section-label light" data-reveal-fade>Now Spinning</span>
-                <div class="now-playing-info" data-reveal-fade>
-                    <p class="np-label">Currently</p>
-                    <p class="np-title" id="nowPlayingTitle">ISOLATION WARD</p>
-                    <p class="np-artist" id="nowPlayingArtist">SINGLEMOTHEROFTWO</p>
-                </div>
-
-                <div class="tracklist" data-reveal-fade>
-                    <div class="track-item active" data-index="0">
-                        <span class="track-num">01</span>
-                        <span class="track-name">ISOLATION WARD</span>
-                        <span class="track-meta">EP · 2024</span>
-                    </div>
-                    <div class="track-item" data-index="1">
-                        <span class="track-num">02</span>
-                        <span class="track-name">DOMESTIC DECAY</span>
-                        <span class="track-meta">LP · 2023</span>
-                    </div>
-                    <div class="track-item" data-index="2">
-                        <span class="track-num">03</span>
-                        <span class="track-name">VOLTAGE_LEAK</span>
-                        <span class="track-meta">Single · 2023</span>
-                    </div>
-                    <div class="track-item" data-index="3">
-                        <span class="track-num">04</span>
-                        <span class="track-name">STRUCTURAL RHYTHM</span>
-                        <span class="track-meta">Demo · 2025</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="player-right" data-reveal-fade>
-                <div class="turntable-wrap">
-                    <div class="turntable">
-                        <div class="turntable-platter"></div>
-                        <div class="vinyl-record" id="vinyl">
-                            <div class="vinyl-grooves"></div>
-                            <div class="vinyl-label">
-                                <img src="public/1.jpg" alt="Album Art" id="vinyl-art">
-                            </div>
-                            <div class="vinyl-hole"></div>
-                        </div>
-                        <div class="tone-arm" id="toneArm">
-                            <div class="arm-head"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-controls">
-                        <button class="ctrl-btn" id="prevBtn" aria-label="Previous">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-                        </button>
-                        <button class="ctrl-btn play-btn" id="playBtn" aria-label="Play">
-                            <svg class="icon-play" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                            <svg class="icon-pause" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                        </button>
-                        <button class="ctrl-btn" id="nextBtn" aria-label="Next">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 3.9V8.1L8.5 12zM16 6h2v12h-2z"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="contact" id="contact">
-        <div class="about-number" data-reveal-fade>03</div>
-        <div class="contact-inner">
-            <span class="section-label" data-reveal-fade>Booking</span>
-            <h2 class="contact-headline" data-reveal-fade>
-                Let's set that<br>dance floor<br><span class="accent">on fire.</span>
-            </h2>
-            <a href="mailto:booking@singlemotheroftwo.com" class="contact-email magnetic" id="contactCta" data-reveal-fade>
-                <span class="email-text">booking@singlemotheroftwo.com</span>
-                <span class="email-arrow">→</span>
-            </a>
-        </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-left">
-            <span class="footer-name">SINGLEMOTHEROFTWO</span>
-            <span class="footer-copy">© 2025</span>
-        </div>
-        <div class="footer-socials">
-            <a href="#" class="social-item" aria-label="Instagram">IG</a>
-            <a href="#" class="social-item" aria-label="Soundcloud">SC</a>
-            <a href="#" class="social-item" aria-label="Spotify">SP</a>
-            <a href="#" class="social-item" aria-label="Bandcamp">BC</a>
+        <span class="footer-name">SINGLEMOTHEROFTWO © 2025</span>
+        <div class="footer-soc">
+            <a href="#">IG</a>
+            <a href="#">SC</a>
+            <a href="#">SP</a>
+            <a href="#">BC</a>
         </div>
     </footer>
 
     <script src="assets/main.js"></script>
 </body>
+
 </html>
